@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0//EN" "http://www.opensymphony.com/xwork/xwork-validator-1.0.dtd">
+<validators>
+	<!-- Field-Validator Syntax -->
+	<field name="book.bookId">
+		<field-validator type="requiredstring">
+			<message key="book.bookId.required" />
+		</field-validator>
+	</field>
+	<field name="book.author">
+		<field-validator type="requiredstring">
+			<message key="book.author.required" />
+		</field-validator>
+	</field>
+	<field name="book.content">
+		<field-validator type="requiredstring">
+			<message key="book.content.required" />
+		</field-validator>
+	</field>
+</validators>

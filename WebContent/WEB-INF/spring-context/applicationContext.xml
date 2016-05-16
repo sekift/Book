@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+ 
+<beans>
+	<!-- dataSource config -->
+	<bean id ="dataSource" class ="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> 
+		<property name="url" value="jdbc:mysql://localhost:3306/book" /> 
+		<property name="username" value="root" /> 
+		<property name="password" value="123456"/> 
+	</bean> 
+	
+	<!-- SessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+		<property name="configLocation">
+			<value>classpath:com\sterning\bean\hibernate\hibernate.cfg.xml</value>
+		</property>		
+	</bean>
+	
+	<!-- TransactionManager  不过这里暂时没注入-->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory"/>
+		</property>
+	</bean>
+	
+	<!-- DAO -->
+	<bean id="booksDao" class="com.sterning.books.dao.hibernate.BooksMapDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
+	
+	<!-- Services -->
+	<bean id="booksService" class="com.sterning.books.services.BooksService">
+		<property name="booksDao">
+			<ref bean="booksDao"/>
+		</property>
+	</bean>
+	
+	<bean id="pagerService" class="com.sterning.commons.PagerService"/>
+	
+	<!-- view -->
+	<bean id="bookAction" class="com.sterning.books.web.actions.BooksAction" singleton="false">
+		<property name="booksService">
+			<ref bean="booksService"/>
+		</property>
+		<property name="pagerService">
+			<ref bean="pagerService"/>
+		</property>
+	</bean>  
+	
+</beans>
